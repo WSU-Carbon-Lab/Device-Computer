@@ -1,0 +1,78 @@
+;* PURPOSE.                                                              *
+;*                                                                       *
+;* Module Description:                                                   *
+;*     Installation inf for        					 *
+;*     Newport Oriel Cornerstone USB Devices                             *
+;*     Spectra-Physics USB VID                                           *
+;* Environment:                                                          *
+;*     user mode Driver Installation file      				 *
+;*									 *
+;*	author Tony Vieira 6/9/2005              			 *
+;*      mod    William J. Eikleberry (DriverVer=10/08/2008, 1.1)	 *
+;*                                                                       *
+;*************************************************************************/
+
+[Version]
+Signature="$CHICAGO$"
+Class=USB
+ClassGUID={36FC9E60-C465-11CF-8056-444553540000}
+provider=%Newport%
+DriverVer=10/08/2008, 1.1
+
+[SourceDisksNames]
+1="Newport/Oriel",,,
+
+[SourceDisksFiles]
+oriel_cs_usb.inf = 1
+oriel_cs_usb.sys = 1
+
+[Manufacturer]
+%Newport%=Newport
+
+[Newport]
+%USB\VID_1180&PID_0012.DeviceDesc%=ORIELUSB.Dev, USB\VID_1180&PID_0012 
+
+;[PreCopySection]
+;HKR,,NoSetupUI,,1
+
+[DestinationDirs]
+ORIELUSB.Files.Ext = 10,System32\Drivers
+
+[DefaultInstall]
+CopyFiles=ORIELUSB.Files.Ext
+AddReg=ORIELUSB.AddReg
+
+[ORIELUSB.Dev]
+; null section
+
+[ORIELUSB.Dev.NT]
+; null section
+
+[ORIELUSB.Dev.NT.Services]
+Addservice = ORIELUSB, 0x00000002, ORIELUSB.AddService
+
+[ORIELUSB.AddService]
+DisplayName    = %ORIELUSB.SvcDesc%
+ServiceType    = 1                  ; SERVICE_KERNEL_DRIVER
+StartType      = 2                  ; SERVICE_AUTO_START
+ErrorControl   = 1                  ; SERVICE_ERROR_NORMAL
+ServiceBinary  = %10%\System32\Drivers\oriel_cs_usb.sys
+LoadOrderGroup = Base
+
+[ORIELUSB.AddReg]
+HKR,,DevLoader,,*ntkern
+HKR,,NTMPDriver,,oriel_cs_usb.sys
+
+[ORIELUSB.Files.Ext]
+oriel_cs_usb.sys
+
+[ORIELUSB.Files.Inf]
+oriel_cs_usb.Inf
+
+
+;---------------------------------------------------------------;
+
+[Strings]
+Newport="Newport"
+USB\VID_1180&PID_0012.DeviceDesc="Newport/Oriel Cornerstone Monochromator"
+ORIELUSB.SvcDesc="Newport/Oriel Cornerstone USB 2.0 Driver"
