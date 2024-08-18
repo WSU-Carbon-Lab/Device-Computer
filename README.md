@@ -9,7 +9,7 @@
 >computer will hit you at roughly $1200, it would be a shame if the
 >new computer did not work with the old equipment.
 
-> **NOTE:** Additionally, you could just upgrade the computer with
+> **NOTE:** Additionally, you could just upgrade the current computer with
 >new hardware, more ram, and new versions of windows. Unless you
 >let the hardware get really old... do not buy all new hardware.
 
