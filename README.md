@@ -61,44 +61,7 @@ loaded in a .env file. This is the standard process in other languages,
 but not in Igor Pro. Thus there are a number of repeaded string variables
 in Igor Pro that need to be updated.
 
-## Please consider implementing a .env file loader for Igor Pro
-
-You might want to spend some time constructing a .env file loader for igor.
-You can base the code off of [this](https://github.com/Isty001/dotenv-c).
-
-<details>
-    <summary>Igor Implementation</summary>
-    Though, it may be the case that you should initialize all of these
-    variables as SVAR's by reading the .env file when the JVC panel 
-    is constructed. Alternately you could store them in "Memory" as
-    some structure with the following implementations.
-    
-    // Sample Igor Like Code
-    struct env_vars{
-        string name;
-        string value;
-    };
-    struct env{
-        string path;
-        env_vars *vars;
-    };
-    function env_load("path/to/.env"){
-        // Load the .env file
-        // Parse the .env file
-        // Set the variables in the .env file
-    }
-</details>
-<details>
-    <summary>Maybe Python</summary>
-    I would recomend transitioning twards a eaily modified python 
-    jupyter notebook implementation. You can set things up so that
-    each experiment has it's own jupyter notebook associated with it. 
-    I tried this for running EQE, but ran into too many issues with
-    the communication, and gave up on getting the python version to
-    work. You should start with just running a JV measurement, and
-    take advantage of python's packages and libraries.
-</details>
-
+## [Please Consider New Methods!]()
 
 ## Enviroment Variables Needed
 There are three ways devices will talk to the device computer.
