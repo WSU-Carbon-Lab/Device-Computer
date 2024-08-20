@@ -227,7 +227,8 @@ to copy this directory to the new device computer. Once you have copied it,
 do not dare touch the code. It is very fragile and will break if you look
 at it wrong. It was compiled in a very specific way, using a very specific
 version of visual studio, and a very specific version of the .NET framework.
-If you need to change the code, you will need to recompile. INSERT WIKI
+If you need to change the code, you will need to recompile. For more information
+on how to do this, or on things to change, check out the [wiki](https://github.com/WSU-Carbon-Lab/Device-Computer/wiki/Recompiling-the-Mono-Drivers)
 
 Igor runs this code by running a script that is located in the bin of the
 `IgorMonoControl` directory. Igor cannot run executables, but can run scripts.
