@@ -61,7 +61,7 @@ loaded in a .env file. This is the standard process in other languages,
 but not in Igor Pro. Thus there are a number of repeaded string variables
 in Igor Pro that need to be updated.
 
-## [Please Consider New Methods!]()
+## [Please Consider New Methods!](https://github.com/WSU-Carbon-Lab/Device-Computer/wiki/New-Implementations)
 
 ## Enviroment Variables Needed
 There are three ways devices will talk to the device computer.
