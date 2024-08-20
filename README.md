@@ -227,8 +227,7 @@ to copy this directory to the new device computer. Once you have copied it,
 do not dare touch the code. It is very fragile and will break if you look
 at it wrong. It was compiled in a very specific way, using a very specific
 version of visual studio, and a very specific version of the .NET framework.
-If you need to change the code, you will need to recompile. Go to the end of
-this document to see how to recompile the code.
+If you need to change the code, you will need to recompile. INSERT WIKI
 
 Igor runs this code by running a script that is located in the bin of the
 `IgorMonoControl` directory. Igor cannot run executables, but can run scripts.
@@ -243,89 +242,3 @@ You will need to update all the places in the code that communicate
 with the monochromater to point to this `start.bat` file. You can do this
 either by updating the code to point to the `start.bat` file, or by creating
 the .env file to follow the single source of truth pattern.
-
-
-# Recompiling and Updating the Mono Control Utility
-You will never want to do this. If you need to, you have two options.
-
-1. Recompile the code using the visual studio project on the old
-windows 8 computer. If you choose this option, you will need to make a copy of the entire code base to preserver the code.
-
-2. Construct your own .NET runtime enviroment to recompile the code. This is a pain, and will take a long time to figure out if you have not done this before. But it is possible, and would benifit the lab in the long run.
-
-Using either of these options, it is important to note the general
-structure of the API. The API is a simple TCP/SOCKET connection that
-acts as a tunnel between the monochromater control software and Igor.
-Igor sends commands to the monochromater control software, and the
-monochromater control software parses these commands and sends them to
-the monochromater using a old crappy Cypress USB to Serial driver.
-The general flow of the API is as follows:
-
-1. Igor instantiates the IgorMonoControl (IMC) program.
-2. IMC connects to the monochromater.
-3. IMC opens a TCP/SOCKET connection on port 700.
-4. Igor connects to the IMC on port 700.
-5. Igor sends commands to the IMC. (WAVE?, GRAT?, FILTER?, etc.)
-6. IMC parses the commands and sends them to the monochromater.
-7. The monochromater responds to the commands.
-8. If the monochromater responds, the IMC sends the response to Igor.
-9. If Igor is trying to receive a response, Igor will receive the response.
-10. Repeat
-
-In the code, there are two important classes that you will need to
-understand to make changes to the code. These classes are the
-`IgorMonoControl` class and the `Cornerstone` class. `IgorMonoControl`
-is the main class that is run by the `start.bat` file. It is responsible
-for creating the TCP/SOCKET connection, and passing the commands to an
-instance of the `Cornerstone` class. The `Cornerstone` class is responsible
-for handling the commands that are sent to it by interfacing with the
-`CyUSB` DLL. The `CyUSB` DLL is a DLL that was provided by oriel to
-interface with the monochromater.
-
-When the `Cornerstone` class is instantiated, it will set a number of
-public and private properties that it will use to communicate with the
-monochromater. Of importance it does not set it's own copy of the state
-of the monochromater. It will always query the monochromater for it's
-state. This is important because every time you query the monochromater
-it will atempt to parse the response from a string into a float, int
-ot leave it as a string. If the response is something that this old
-code does not understand, it will return a -1, and the entire system
-will break. Dispite the wonders of C# and .NET, the ABI interface
-with the `CyUSB` DLL is likely incompatible with the current frameworks
-used by Visual Studio and .NET and is likely the source of this issue.
-
-These is one location in the code that could be the root of the issue,
-however, will require you to recompile the `Cornerstone.dll` file. You may
-be able to use Visual Studio's disassembler to look at the code, and
-rewrite your own implementation of the `Cornerstone` class to debug the
-issue. If not, then you will need to use Microsofts `ildasm` tool to
-disassemble the `Cornerstone.dll` file into a `.ilasm` assembly file.
-You will be able to edit the assembly and reassemble it using the
-corresponding `ilasm` tool.
-
-In either case, you will want to look at two interactions in the code.
-
-```c#
-// Cornerstone.Dll
-namespace CornerstoneDll;
-
-public class Cornerstone{
-    // Properties
-    private int waitTime = 10;
-    private uint dev_timeout = 500u;
-}
-```
-
-Both the private properties `waitTime` and `dev_timeout` are used to
-set the timeout for the monochromater. The `waitTime` property is used
-to determine how many iterations the code will try to read from the
-monochromater before it gives up. The `dev_timeout` property is used
-to set the timeout for the monochromater. Unfortunately, increasing
-the `waitTime` property will reduce the number of times the code will
-try to read from the monochromater before it gives up. Increasing the
-frequency of bugs. You cannot increase the `dev_timeout` property
-because the property is private and there are no setter methods for
-the property. You will need to recompile the `Cornerstone.dll` file
-to change the `dev_timeout` property to a public property with a setter
-method. This will allow you to change the timeout for the monochromater
-and hopefully reduce the number of bugs.... This is not easy!
