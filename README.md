@@ -120,7 +120,7 @@ working, the drivers are not installed, or the device has no interogation
 response.
 
 For a compleate guide on updating the ip addresses, please check out the 
-[wiki]().
+[wiki](https://github.com/WSU-Carbon-Lab/Device-Computer/wiki/IP-Data-Update).
 
 Once you have the IP address of the device, NI VISA will create a string
 that is used to communicate with the device though the NI VISA interface.
