@@ -119,6 +119,9 @@ number. If you do not get a response, the device is not connected, not
 working, the drivers are not installed, or the device has no interogation
 response.
 
+For a compleate guide on updating the ip addresses, please check out the 
+[wiki]().
+
 Once you have the IP address of the device, NI VISA will create a string
 that is used to communicate with the device though the NI VISA interface.
 This string is called the Instrument Descriptor. Once you have this string,
